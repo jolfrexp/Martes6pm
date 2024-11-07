@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer, String, Float, Date
+from sqlalchemy import Column,Integer, String,Date,ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -10,55 +10,70 @@ Base=declarative_base()
 class Usuario(Base):
     __tablename__='usuarios'
     id=Column(Integer, primary_key=True, autoincrement=True)
-    nombres=Column(String(50))
+    nombre=Column(String(50))
     edad=Column(Integer)
     telefono=Column(String(12))
     correo=Column(String(20))
-    contraseña=Column(String(10))
+    contrasena=Column(String(10))
     fechaRegistro=Column(Date)
     ciudad=Column(String(50))
+    facturas = relationship("Factura",back_populates="usuario")
 
 #GASTO
 class Gasto(Base):
-    __tablename__ ='gasto' 
+    __tablename__ ='gastos' 
     id=Column(Integer,primary_key=True, autoincrement=True)
     monto=Column(Integer)
-    fecha=Column(Date)
     descripcion=Column(String(75))
-    nombre=Column(String(50))
+    categoria_id = Column(Integer,ForeignKey("categorias.id"))
+    metodo_id =Column(Integer,ForeignKey("metodosDePago.id"))
+    factura_id = Column(Integer,ForeignKey("facturas.id"))
+    metodoDePago = relationship("MDP",back_populates="gastos")
+    categoria =relationship("Categoria",back_populates="gastos")
+    factura = relationship("Factura",back_populates="gastos")
     
 
 #CATEGORIA
 class Categoria(Base):
-    __tablename__ = 'categoria'
+    __tablename__ = 'categorias'
     id=Column(Integer,primary_key=True, autoincrement=True)
     nombreCategoria=Column(String(50))
     descripcion=Column(String(75))
     fotoicono=Column(String(150))
-
-#METODOS DE PAGO
+    gastos = relationship("Gasto",back_populates="categoria")
+    ingresos = relationship("Ingreso",back_populates="categoria")
+#INGRESO
 class Ingreso(Base):
-    __tablename__ = 'ingreso'
+    __tablename__ = 'ingresos'
     id=Column(Integer,primary_key=True, autoincrement=True)
     monto=Column(Integer)
-    fecha=Column(Date)
     descripcion=Column(String(75))
-    nombre=Column(String(50))
- #INGRESO   
+    metodo_id =Column(Integer,ForeignKey("metodosDePago.id"))
+    categoria_id = Column(Integer,ForeignKey("categorias.id"))
+    factura_id = Column(Integer,ForeignKey("facturas.id"))
+    factura = relationship("Factura",back_populates="ingresos")
+    metodoDePago = relationship("MDP",back_populates="ingresos")
+    categoria =relationship("Categoria",back_populates="ingresos")
+
+
+#METODO DE PAGOS 
 class MDP(Base):
-    __tablename__ = 'metodoDePago'
+    __tablename__ = 'metodosDePago'
     id=Column(Integer,primary_key=True, autoincrement=True)
     nombreMetodo=Column(String(50))
     descripcion=Column(String(100))
+    gastos = relationship("Gasto",back_populates="metodoDePago")
+    ingresos = relationship("Ingreso",back_populates="metodoDePago")
 
 #FACTURA
 class Factura(Base):
-    __tablename__ = 'Factura'
+    __tablename__ = 'facturas'
     id = Column(Integer, primary_key=True, autoincrement=True)
     fecha = Column(Date,nullable = False)
-    usuario_id = Column(Integer)
-    metodo_id = Column(Integer)
-    categoria_id = Column(Integer)
-    gasto_id = Column(Integer)
-    subtotal  = Column(String(50),nullable =False)
+    user_id = Column(Integer,ForeignKey("usuarios.id"))
     total  = Column(String(50),nullable =False)
+
+    usuario = relationship("Usuario",back_populates="facturas")
+    gastos = relationship("Gasto",back_populates="factura")
+    ingresos = relationship("Ingreso",back_populates="factura")
+    

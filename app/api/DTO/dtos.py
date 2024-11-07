@@ -5,11 +5,11 @@ from datetime import date
 #el modelo de trasnferencia de datos
 
 class UsuarioDTOPeticion(BaseModel):
-    nombres : str
+    nombre : str
     edad : int
     telefono: str
     correo : str
-    contraseña : str
+    contrasena : str
     fechaRegistro : date
     ciudad : str
     class Config:   # trae la informacion de la BD
@@ -17,8 +17,9 @@ class UsuarioDTOPeticion(BaseModel):
 
 class UsuarioDTORespuesta(BaseModel):
     id : int
-    nombres : str
+    nombre : str
     correo : str
+    contrasena: str
     fechaRegistro: date
     class Config:   
         orm_mode=True
@@ -27,17 +28,19 @@ class UsuarioDTORespuesta(BaseModel):
 # gastoDTOPeticion
 class gastoDTOPeticion(BaseModel):
     monto : int
-    fecha : date
     descripcion : str
-    nombre : str
+    categoria_id: int
+    metodo_id:int
+    factura_id:int
     class Config:
         orm_mode=True
 class gastoDTORespuesta(BaseModel):
     id : int
     monto : int
-    fecha : date
     descripcion : str
-    nombre : str
+    categoria_id:int
+    metodo_id:int
+    factura_id : int
     class Config:
         orm_mode=True
 
@@ -60,17 +63,19 @@ class categoriaDTORespuesta(BaseModel):
 
 class ingresoDTOPeticion(BaseModel):
     monto : int
-    fecha : date
     descripcion : str
-    nombre : str
+    categoria_id:int
+    metodo_id:int
+    factura_id : int
     class Config:
         orm_mode=True
 class ingresoDTORespuesta(BaseModel):
     id : int
     monto : int
-    fecha : date
     descripcion : str
-    nombre : str
+    categoria_id:int
+    metodo_id:int
+    factura_id : int
     class Config:
         orm_mode=True
 #Metodo de pago
@@ -90,19 +95,12 @@ class facturaDTORespuesta(BaseModel):
     id: int
     fecha : date
     usuario : str
-    metodo : str
-    gasto : str
-    subtotal : float
     total : float
     class Config:
         orm_mode=True
 class facturaDTOPeticion(BaseModel):
     fecha : date
     usuario_id : int
-    metodo_id : int
-    categoria_id : int
-    gasto_id : int
-    subtotal  :  float
     total  : float
     class Config:
         orm_mode=True

@@ -20,19 +20,18 @@ def conectarConBd():
         baseDatos.close()  #cerrar peticion  
 
     
-#   construyendo nuestros servicios
-
+#construyendo nuestros servicios
 #Cada servicio (operacion o transaccion en BD) debe programarse como una funcion
 @rutas.post("/usuario", response_model=UsuarioDTORespuesta, summary="Registrar un usuario en la base de datos") #documentando un servicio 
 def guardarUsuario(datosUsuario:UsuarioDTOPeticion,database:Session=Depends(conectarConBd)): # con esto podemos comunicarme con la base de datos
     # debemos filtrar los datos, para que coincidan con la base de datos
     try:
         usuario=Usuario(
-            nombres=datosUsuario.nombres,
+            nombre=datosUsuario.nombre,
             edad = datosUsuario.edad,
             telefono=datosUsuario.telefono,
             correo=datosUsuario.correo,
-            contraseña=datosUsuario.contraseña,
+            contrasena=datosUsuario.contrasena,
             fechaRegistro = datosUsuario.fechaRegistro,
             ciudad=datosUsuario.ciudad
 
@@ -62,9 +61,10 @@ def guardarGasto(datosGasto:gastoDTOPeticion,database:Session=Depends(conectarCo
     try:
         gasto=Gasto(
             monto=datosGasto.monto,
-            fecha=datosGasto.fecha,
             descripcion= datosGasto.descripcion,
-            nombre=datosGasto.nombre
+            categoria_id=datosGasto.categoria_id,
+            metodo_id=datosGasto.metodo_id,
+            factura_id=datosGasto.factura_id
         )
         #ordenando a la base de datos
         database.add(gasto) #agregemelo
@@ -119,9 +119,10 @@ def guardarIngreso(datosIngreso:ingresoDTOPeticion,database:Session=Depends(cone
     try:
         ingreso=Ingreso(
             monto=datosIngreso.monto,
-            fecha=datosIngreso.fecha,
             descripcion= datosIngreso.descripcion,
-            nombre=datosIngreso.nombre
+            categoria_id = datosIngreso.categoria_id,
+            metodo_id =datosIngreso.metodo_id,
+            factura_id=datosIngreso.factura_id
         )
         #ordenando a la base de datos
         database.add(ingreso) #agregemelo
@@ -174,10 +175,9 @@ def guardarFactura(datosFatura:facturaDTOPeticion,database:Session=Depends(conec
     # debemos filtrar los datos, para que coincidan con la base de datos
     try:
         factura=Factura(
-            usuario=datosFatura.usuario,
+            usuario=datosFatura.usuario_id,
             fecha=datosFatura.fecha,
-            metodo= datosFatura.metodo,
-            gasto=datosFatura.gasto
+            total=datosFatura.total
         )
         #ordenando a la base de datos
         database.add(factura) #agregemelo
