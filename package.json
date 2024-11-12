@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "download": "^8.0.0"
+    "download": "^8.0.0",
+    "fastapi": "^0.0.8"
   }
 }

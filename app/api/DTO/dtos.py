@@ -104,3 +104,9 @@ class facturaDTOPeticion(BaseModel):
     total  : float
     class Config:
         orm_mode=True
+class loginDTOPeticion(BaseModel):
+    user: str
+    password :str
+class loginDTORespuesta(BaseModel):
+    user: UsuarioDTORespuesta
+    

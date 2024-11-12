@@ -1,10 +1,11 @@
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter,HTTPException,Request
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi.params import Depends 
-from app.api.DTO.dtos import UsuarioDTOPeticion, UsuarioDTORespuesta,gastoDTORespuesta,gastoDTOPeticion,ingresoDTOPeticion,ingresoDTORespuesta,facturaDTOPeticion,facturaDTORespuesta,categoriaDTOPeticion,categoriaDTORespuesta,MDPDTOPeticion,MDPDTORespuesta
+from app.api.DTO.dtos import UsuarioDTOPeticion,loginDTOPeticion,loginDTORespuesta , UsuarioDTORespuesta,gastoDTORespuesta,gastoDTOPeticion,ingresoDTOPeticion,ingresoDTORespuesta,facturaDTOPeticion,facturaDTORespuesta,categoriaDTOPeticion,categoriaDTORespuesta,MDPDTOPeticion,MDPDTORespuesta
 from app.api.models.tablassql import Usuario,Gasto,Factura,Ingreso,Categoria,MDP
 from app.database.configuration import sessionLocal, engine
+from app.api.services.auth_services import login
 
 rutas=APIRouter()
 
@@ -197,3 +198,14 @@ def buscarFacturas(database:Session=Depends(conectarConBd)):
     except Exception as error:
         database.rollback()
         raise HTTPException(status_code=400, detail=f"Tenemos un problema {error}")
+@rutas.post("/login", response_model=UsuarioDTORespuesta, summary="solicitud inicio de sesion") #documentando un servicio 
+def Login(datosLogin:loginDTOPeticion,database:Session=Depends(conectarConBd)): # con esto podemos comunicarme con la base de datos
+    # debemos filtrar los datos, para que coincidan con la base de datos
+    try:
+        usuarios = database.query(Usuario).all()
+        rpt =  login(datosLogin.user,datosLogin.password,usuarios)
+        return usuarios[rpt]
+    except Exception as error:
+        database.rollback()
+        raise HTTPException(status_code=400, detail=f"Tenemos un problema {error}")
+
