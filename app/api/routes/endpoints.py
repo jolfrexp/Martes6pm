@@ -2,7 +2,7 @@ from fastapi import APIRouter,HTTPException,Request
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi.params import Depends 
-from app.api.DTO.dtos import UsuarioDTOPeticion,loginDTOPeticion,loginDTORespuesta , UsuarioDTORespuesta,gastoDTORespuesta,gastoDTOPeticion,ingresoDTOPeticion,ingresoDTORespuesta,facturaDTOPeticion,facturaDTORespuesta,categoriaDTOPeticion,categoriaDTORespuesta,MDPDTOPeticion,MDPDTORespuesta
+from app.api.DTO.dtos import UsuarioDTOPeticion,loginDTOPeticion,UsuarioDTORespuesta,gastoDTORespuesta,gastoDTOPeticion,ingresoDTOPeticion,ingresoDTORespuesta,facturaDTOPeticion,facturaDTORespuesta,categoriaDTOPeticion,categoriaDTORespuesta,MDPDTOPeticion,MDPDTORespuesta
 from app.api.models.tablassql import Usuario,Gasto,Factura,Ingreso,Categoria,MDP
 from app.database.configuration import sessionLocal, engine
 from app.api.services.auth_services import login

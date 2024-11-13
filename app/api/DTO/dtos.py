@@ -107,6 +107,4 @@ class facturaDTOPeticion(BaseModel):
 class loginDTOPeticion(BaseModel):
     user: str
     password :str
-class loginDTORespuesta(BaseModel):
-    user: UsuarioDTORespuesta
     
