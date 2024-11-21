@@ -176,7 +176,7 @@ def guardarFactura(datosFatura:facturaDTOPeticion,database:Session=Depends(conec
     # debemos filtrar los datos, para que coincidan con la base de datos
     try:
         factura=Factura(
-            usuario=datosFatura.usuario_id,
+            user_id=datosFatura.usuario_id,
             fecha=datosFatura.fecha,
             total=datosFatura.total
         )
@@ -193,6 +193,15 @@ def guardarFactura(datosFatura:facturaDTOPeticion,database:Session=Depends(conec
 def buscarFacturas(database:Session=Depends(conectarConBd)):
     try:
         facturas = database.query(Factura).all()
+        return facturas
+
+    except Exception as error:
+        database.rollback()
+        raise HTTPException(status_code=400, detail=f"Tenemos un problema {error}")
+@rutas.get("/factura/{usuario_id}",response_model=list[facturaDTORespuesta],summary="Buscar todos las Facturas por id de usuario en BD")
+def buscarFacturas(usuario_id: int,database:Session=Depends(conectarConBd)):
+    try:
+        facturas = database.query(Factura).where(Factura.user_id == usuario_id)
         return facturas
 
     except Exception as error:

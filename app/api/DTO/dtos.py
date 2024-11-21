@@ -62,10 +62,10 @@ class categoriaDTORespuesta(BaseModel):
 # IngresoDTOPeticion
 
 class ingresoDTOPeticion(BaseModel):
-    monto : int
     descripcion : str
-    categoria_id:int
+    monto : int
     metodo_id:int
+    categoria_id:int
     factura_id : int
     class Config:
         orm_mode=True
@@ -94,7 +94,7 @@ class MDPDTORespuesta(BaseModel):
 class facturaDTORespuesta(BaseModel):
     id: int
     fecha : date
-    usuario : str
+    user_id : int
     total : float
     class Config:
         orm_mode=True
@@ -102,7 +102,7 @@ class facturaDTOPeticion(BaseModel):
     fecha : date
     usuario_id : int
     total  : float
-    class Config:
+    class Config:           
         orm_mode=True
 class loginDTOPeticion(BaseModel):
     user: str

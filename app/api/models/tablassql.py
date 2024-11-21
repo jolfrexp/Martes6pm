@@ -12,7 +12,7 @@ class Usuario(Base):
     id=Column(Integer, primary_key=True, autoincrement=True)
     nombre=Column(String(50))
     edad=Column(Integer)
-    telefono=Column(String(12))
+    telefono=Column(String(12)) 
     correo=Column(String(20))
     contrasena=Column(String(10))
     fechaRegistro=Column(Date)
