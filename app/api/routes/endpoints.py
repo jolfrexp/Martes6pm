@@ -85,6 +85,15 @@ def buscarGasto(database:Session=Depends(conectarConBd)):
     except Exception as error:
         database.rollback()
         raise HTTPException(status_code=400, detail=f"Tenemos un problema {error}")
+@rutas.get("/gasto/{factura_id}",response_model=list[gastoDTORespuesta],summary="Buscar todos los gastos en BD")
+def buscarGasto(factura_id:int,database:Session=Depends(conectarConBd)):
+    try:
+        gastos = database.query(Gasto).where(Gasto.factura_id==factura_id)
+        return gastos
+
+    except Exception as error:
+        database.rollback()
+        raise HTTPException(status_code=400, detail=f"Tenemos un problema {error}")
 #Categoria
 @rutas.post("/categoria", response_model=categoriaDTORespuesta, summary="Registrar una categoria en la base de datos") #documentando un servicio 
 def guardarCategoria(datosCategoria:categoriaDTOPeticion,database:Session=Depends(conectarConBd)): # con esto podemos comunicarme con la base de datos
@@ -138,6 +147,15 @@ def guardarIngreso(datosIngreso:ingresoDTOPeticion,database:Session=Depends(cone
 def buscarIngreso(database:Session=Depends(conectarConBd)):
     try:
         ingreso = database.query(Ingreso).all()
+        return ingreso
+
+    except Exception as error:
+        database.rollback()
+        raise HTTPException(status_code=400, detail=f"Tenemos un problema {error}")
+@rutas.get("/ingreso/{factura_id}",response_model=list[ingresoDTORespuesta],summary="Buscar todos los ingresos en BD")
+def buscarIngreso(factura_id:int,database:Session=Depends(conectarConBd)):
+    try:
+        ingreso = database.query(Ingreso).where(Ingreso.factura_id ==factura_id)
         return ingreso
 
     except Exception as error:
