@@ -62,10 +62,10 @@ class categoriaDTORespuesta(BaseModel):
 # IngresoDTOPeticion
 
 class ingresoDTOPeticion(BaseModel):
-    descripcion : str
     monto : int
-    metodo_id:int
+    descripcion : str
     categoria_id:int
+    metodo_id:int
     factura_id : int
     class Config:
         orm_mode=True
