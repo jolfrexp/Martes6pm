@@ -4,7 +4,8 @@ from app.api.models.tablassql import Base
 from app.api.routes.endpoints import rutas 
 from starlette.responses import RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
-
+import os
+import uvicorn
 #crear las tablas de sql desde python
 Base.metadata.create_all(bind = engine)
 #Variable para administrar la aplicacion
@@ -36,3 +37,7 @@ app.add_middleware(
 def main():
     return RedirectResponse(url="/docs")
 app.include_router(rutas)
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0",port=port)
+    
